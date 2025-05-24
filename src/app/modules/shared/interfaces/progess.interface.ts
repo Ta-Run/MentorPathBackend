@@ -6,9 +6,11 @@ export interface Interval {
 
 export interface IProgress extends Document {
 
-    userId: Types.ObjectId;
-    videoId: Types.ObjectId;
-    intervals: Interval[];
-    lastWatchedAt: number;
+    userId?: Types.ObjectId;
+    videoId?: Types.ObjectId;
+    intervals?: Interval[];
+    lastWatchedAt?: number;
     updatedAt?: string;
+    rawIntervals?: Interval[];
+
 }

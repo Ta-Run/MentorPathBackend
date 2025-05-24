@@ -19,34 +19,34 @@ class VideoDal {
 
     async getVideoProgess(userId: any, videoId: any): Promise<IVideo | any> {
         try {
-
             const progressDoc = await Progress.findOne({ userId, videoId });
 
             if (!progressDoc) {
                 return { progress: 0, intervals: [], lastWatchedAt: 0 };
             }
 
-
-            const duration = 600;
-
-
             const video: any = await Video.findById(videoId);
-            const durationSec: any = video.duration;
+            const durationSec = video?.duration || 600; // Fallback
 
-            const totalWatched = progressDoc.intervals.reduce(
-                (sum: any, i) => sum + (i.end - i.start), 0
+            const totalWatched = (progressDoc.intervals ?? []).reduce(
+                (sum: number, i) => sum + (i.end - i.start),
+                0
             );
-            const progress: any = ((totalWatched / durationSec) * 100).toFixed(2);
+
+            const progress = ((totalWatched / durationSec) * 100).toFixed(2);
+
             return {
                 progress,
                 intervals: progressDoc.intervals,
                 lastWatchedAt: progressDoc.lastWatchedAt
-            }
+            };
+
         } catch (error: any) {
-            console.error('Error creating user:', error);
-            throw new MentorError(error.status, 'Failed to create user', error);
+            console.error('Error in getVideoProgress:', error);
+            throw new MentorError(error.status, 'Failed to fetch video progress', error);
         }
     }
+
 
 
 }

@@ -5,14 +5,18 @@ import { MentorError } from '../../../utils';
 
 
 class ProgessDal {
-    async progressUpdate(userId: any, videoId: any, lastWatchedAt: any, merged: any): Promise<IProgress> {
+    async progressUpdate(userId: any, videoId: any, lastWatchedAt: any, merged: any, newRawInterval: any): Promise<IProgress> {
         try {
-            const result: any = await Progress.findOneAndUpdate(
+            return await Progress.findOneAndUpdate(
                 { userId, videoId },
-                { intervals: merged, lastWatchedAt, updatedAt: new Date() },
-                { upsert: true }
+                {
+                    newRawInterval,
+                    intervals: merged,
+                    lastWatchedAt,
+                    updatedAt: new Date()
+                },
+                { upsert: true, new: true }
             );
-            return result
         } catch (error: any) {
             console.error('Error creating user:', error);
             throw new MentorError(error.status, 'Failed to create user', error);

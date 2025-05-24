@@ -18,6 +18,14 @@ const progressSchema: Schema<IProgress> = new mongoose.Schema({
     ref: 'Video',
     required: true
   },
+
+
+  rawIntervals: {
+    type: [intervalSchema],
+    default: []
+  },
+
+
   intervals: {
     type: [intervalSchema],
     default: []
@@ -30,6 +38,8 @@ const progressSchema: Schema<IProgress> = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+
+
 });
 
 progressSchema.index({ userId: 1, videoId: 1 }, { unique: true });

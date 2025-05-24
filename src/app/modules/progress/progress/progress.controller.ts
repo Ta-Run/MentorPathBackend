@@ -33,9 +33,9 @@ export class ProgressController {
     try {
 
 
-      const { videoId, start, end } = req.body;
+      const { userId, videoId, start, end } = req.body;
 
-      const userId: any = "6831f429c97a28c50218a9de"
+      const newRawInterval = { start, end };
 
 
       let doc = await ProgressDal.findProgess(userId, videoId)
@@ -45,11 +45,14 @@ export class ProgressController {
         ? [...doc.intervals.filter((i: any) => i && typeof i.start === 'number' && typeof i.end === 'number'), { start, end }]
         : [{ start, end }];
 
-      const merged = await this.mergeIntervals(intervals);
+      const existingRaw = doc?.rawIntervals || [];
+      const updatedRaw = [...existingRaw, newRawInterval];
+
+      const merged = await this.mergeIntervals(updatedRaw);
 
       const lastWatchedAt = Math.max(...(await merged).map(i => i.end)) || 30;
 
-      const result = await ProgressDal.progressUpdate(userId, videoId, lastWatchedAt, merged)
+      const result = await ProgressDal.progressUpdate(userId, videoId, lastWatchedAt, updatedRaw, merged,)
 
 
       return res.status(200).json({
