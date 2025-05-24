@@ -27,7 +27,7 @@ class ProgessDal {
             return result
         } catch (error: any) {
             console.error('Error creating user:', error);
-            throw new MentorError(error.status, 'Failed to create user', error);
+            throw new MentorError(error.status, error.message);
         }
     }
 
