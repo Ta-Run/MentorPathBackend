@@ -1,4 +1,4 @@
-export class KrvError extends Error {
+export class MentorError extends Error {
   status: number;
   error?: unknown;
 
@@ -9,7 +9,7 @@ export class KrvError extends Error {
 
     // Maintain proper stack trace (only available in V8 engines)
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, KrvError);
+      Error.captureStackTrace(this, MentorError);
     }
   }
 }

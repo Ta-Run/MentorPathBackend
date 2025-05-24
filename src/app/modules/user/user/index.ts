@@ -1,2 +1,2 @@
-export { router as SuperAdminPanelRouter } from './superAdmin.routes';
-export { SuperAdminPanelController } from './superAdmin.controller';
+export { router as UserPanelRouter } from './user.routes';
+export { UserPanelController } from './user.controller';

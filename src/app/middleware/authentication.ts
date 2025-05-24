@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { KrvError, JWT } from '../utils/index';
-import { Dal as SuperAdminDal } from '../modules/shared/dals/superAdmin.dal';
 import { Dal as Useral } from '../modules/shared/dals/user.dal';
 import { ModifyRequest } from '../../../types.d copy';
-
+import { IUser } from '../modules/shared/interfaces/user.interface';
 class AuthenticateUser {
 
   // constructor() {
@@ -22,15 +21,13 @@ class AuthenticateUser {
   }
 
 
-  clientAuthenticate = async (req: ModifyRequest, res: Response, next: NextFunction) => {
+  userAuthenticate = async (req: ModifyRequest, res: Response, next: NextFunction) => {
     try {
       const token = this.extractToken(req);
       const id: any = await JWT.verifyToken(token);
       const user: IUser = await Useral.findUserById(id);
 
-      if (!user?.active) {
-        return next(new KrvError(401, 'User is blocked'));
-      }
+
       req.user = user;
       next();
     } catch (err) {
