@@ -24,6 +24,25 @@ export class VideoController {
     }
   }
 
+  async getVideosProgess(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try {
+
+      const { userId, videoId } = req.body
+      const data: any = await VideoDal.getVideoProgess(userId, videoId);
+
+      const result = new MentorResult(200, 'Video Get Successfully', data);
+      res.status(200).json(result);
+    } catch (error: unknown) {
+      if (error instanceof MentorError) {
+        next(new MentorError(error.status, error.message));
+      } else {
+        next(new MentorError(500, "Unexpected error occurred"));
+      }
+    }
+  }
+
+
+
 
 }
 

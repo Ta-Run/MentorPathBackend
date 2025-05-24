@@ -9,4 +9,9 @@ router.post('/getVideo', (request: Request, response: Response, next: NextFuncti
 });
 
 
+router.post('/videoProgess', (request: Request, response: Response, next: NextFunction) => {
+  VideoPanelController.getVideosProgess(request, response, next);
+});
+
+
 
